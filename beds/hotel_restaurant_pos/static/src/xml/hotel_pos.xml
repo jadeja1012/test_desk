@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+	<t t-name="ReceiptScreen_inherit" t-inherit="point_of_sale.ReceiptScreen" t-inherit-mode="extension">
+		<xpath expr="//div[hasclass('actions')]" position="replace">
+			<div class="actions d-flex flex-column justify-content-between flex-lg-grow-1 flex-grow-0 flex-shrink-1 flex-basis-0 border-end">
+				<div class="o_payment_successful d-flex flex-column w-100 w-xxl-75 p-3 pt-xxl-5 mx-auto">
+					<div class="d-flex flex-column align-items-center p-1 p-lg-3 border border-success rounded-3 bg-success-subtle text-success fs-3">
+						<i t-if="!ui.isSmall" class="fa fa-fw fa-2x fa-check-circle"/>
+						<span t-if="this.currentOrder.payatcheckout" class="fs-3 fw-bolder">Payment At Checkout</span>
+						<span t-if="!this.currentOrder.payatcheckout" class="fs-3 fw-bolder">Payment Successful</span>
+						<div class="fs-4 fw-bold d-flex justify-content-center align-items-center gap-2">
+							<span t-esc="orderAmountPlusTip" />
+							<span t-if="this.currentOrder.nb_print === 0" class="edit-order-payment badge bg-success text-white rounded cursor-pointer pt-1" t-on-click="() => this.pos.orderDetails(this.pos.get_order())">Edit payment</span>
+						</div>
+					</div>
+					<hr />
+					<div class="receipt-options d-flex flex-column gap-2">
+						<div class="d-flex gap-1">
+							<button class="button print btn btn-lg btn-secondary w-100 py-3" t-on-click="() => doFullPrint.call()">
+								<i t-attf-class="fa {{doFullPrint.status === 'loading' ? 'fa-fw fa-spin fa-circle-o-notch' : 'fa-print'}} me-1" />Print Full Receipt
+							</button>
+							<button t-if="pos.config.basic_receipt" class="button print btn btn-lg btn-secondary w-100 py-3" t-on-click="() => doBasicPrint.call()">
+								<i t-attf-class="fa {{doBasicPrint.status === 'loading' ? 'fa-fw fa-spin fa-circle-o-notch' : 'fa-print'}} me-1" />Print Basic Receipt
+							</button>
+						</div>
+						<div class="d-flex flex-column gap-2">
+							<div class="d-flex">
+								<input type="text" class="flex-grow-1 border p-3 bg-view pe-5 border-end-0 rounded-start-2 position-relative send-receipt-email-input" t-attf-placeholder="e.g. john.doe@mail.com" t-model="state.email" />
+								<div>
+									<button t-att-style="`width: ${this.ui.isSmall ? '4rem' : '8rem'}`" class="btn btn-primary btn-lg lh-lg rounded-start-0 h-100" t-att-disabled="!isValidEmail" t-on-click="() => this.actionSendReceiptOnEmail()">
+										<i t-attf-class="fa {{sendReceipt.status === 'loading' and sendReceipt.lastArgs?.[0]?.name === 'Email' ? 'fa-fw fa-spin fa-circle-o-notch' : 'fa-paper-plane'}}" />
+									</button>
+								</div>
+							</div>
+							<div class="d-flex gap-1">
+								<input t-if="showPhoneInput()" type="text" class="flex-grow-1 border p-3 bg-view pe-5 rounded-2 position-relative send-receipt-phone-input" t-attf-placeholder="e.g. 0123456789" t-model="state.phone" />
+								<div class="sending-receipt-management d-flex gap-1" />
+							</div>
+						</div>
+						<div class="notice text-center">
+							<t t-set="usedMethod" t-value="sendReceipt.lastArgs?.[0]?.name" />
+							<div t-if="sendReceipt.status === 'loading'" class="text-info">Sending <t t-esc="usedMethod"/> in progress</div>
+							<div t-if="sendReceipt.status === 'success'" class="text-success"><t t-esc="usedMethod"/> is sent successfully</div>
+							<div t-if="sendReceipt.status === 'error'" class="text-danger">Sending <t t-esc="usedMethod"/> failed. Please try again</div>
+						</div>
+					</div>
+				</div>
+				<t t-set="splittedOrder" t-value="this.currentOrder.originalSplittedOrder and !this.currentOrder.originalSplittedOrder.finalized"/>
+				<div id="action_btn_desktop" t-if="!ui.isSmall" class="validation-buttons d-flex w-100 gap-2 p-2 sticky-bottom">
+					<button class="button next validation btn btn-primary btn-lg w-100 py-4 lh-lg" t-att-class="{ highlight: !locked }" t-if="!splittedOrder" t-on-click="orderDone" name="done">
+						New Order
+					</button>
+				</div>
+			</div>
+		</xpath>
+	 </t>
+	<t t-name="custom_paymentmethod_inherit" t-inherit="point_of_sale.PaymentScreenMethods" t-inherit-mode="extension">
+		<xpath expr="//div[hasclass('paymentmethods')]" position="inside">
+			<div class="button paymentmethod btn btn-primary rounded-0 border-bottom" t-on-click="() => this.payatcheckout()" id="payatcheckout" style="display:none;">
+				<div class="payment-method-display d-flex align-items-center flex-grow-1" style="margin-left:12px;">
+                	<div>
+                        <i class="fa fa-sign-out fa-2x"/>
+                    </div>
+                    <span class="payment-name" style="margin-left:12px;">Pay at CheckOut</span>
+                </div>
+            </div>
+		</xpath>
+	</t>
+	<t t-name="custom_inherit" t-inherit="point_of_sale.PaymentScreenButtons" t-inherit-mode="extension">
+		<xpath expr="//div[hasclass('payment-buttons')]" position="inside">
+			<button class="button js_set_room btn btn-light py-3 text-start rounded-0 border-bottom" 
+                t-on-click="click_set_room">
+                <i class="fa fa-file-text-o me-2" />Room
+            </button>
+		</xpath>
+	</t>
+	<t t-name="CustomerWaiterNameWidget" owl="1">
+      	
+      		<div id="cust_name" class="order">
+     			<div id="cust_waiter_name">
+     				<table>
+     					<tr>
+     						<td width="130">
+     							<label class="cust_waiter_name_lbl">Customer Name</label>
+     						</td>
+     						<td>
+     							<label class="cust_waiter_name_lbl" >:</label>
+     							<label class="cust_waiter_name_lbl" id="cust_name_lbl"></label>
+     						</td>
+     					</tr>
+     				</table>
+     				
+     			</div>
+     			<div id="waiter_name">
+     				<div id="div_res_no">
+     				<table>
+     					<tr>
+     						<td width="130">
+     							<label class="cust_waiter_name_lbl">Reservation No</label>
+     						</td>
+     						<td>
+     							<label class="cust_waiter_name_lbl" >:</label>
+     							<label class="cust_waiter_name_lbl" id="tbl_res_no_board"></label>
+     						</td>
+     					</tr>
+     				</table>
+     				</div>
+     				<table>
+     					<tr>
+     						<td width="130">
+     							<label class="cust_waiter_name_lbl">Waiter Name</label>
+     						</td>
+     						<td>
+     							<label class="cust_waiter_name_lbl" >:</label>
+     							<label  class="cust_waiter_name_lbl" id="waiter_name_lbl"></label>
+     						</td>
+     					</tr>
+     				</table>
+     				
+     			</div>
+     		</div>
+      	
+      </t>
+     
+	<t t-name="RoomLine">
+        <tr class='room-line' t-att-data-id='room.id'>
+            <td><t t-esc='room.order_line_id[1]' /></td>
+            <td t-att-data-folio-id="room.folio_id[0]"><t t-esc='room.folio_id[1]' /></td>
+            <td t-att-data-cust-id='room.partner_id'><t  t-esc='room.partner_name' /></td>
+            <td><t t-esc='room.checkin_date' /></td>
+            <td><t t-esc='room.checkout_date' /></td>
+        </tr>
+    </t>
+	<t t-name="RoomListScreenWidget" owl="1">
+	 <div class="roomlist-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                <span class='button back' t-on-click="back">
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    
+                    </section>
+                    <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow collapsed'>
+                            <div class='subwindow-container collapsed'>
+                                <div class='subwindow-container-fix room-details-contents'>
+                                </div>
+                            </div>
+                        </section>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='room-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Room Name</th>
+                                                <th>Folio No</th>
+                                                <th>Customer Name</th>
+                                                <th>Checkin Date</th>
+                                                <th>CheckOut Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='room-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+                    
+                    </div>
+                    </div>
+                    
+	
+	</t>
+	<t t-name="ReservedTableAlertWidget">
+    	<div class="modal-dialog">
+        	<div class="popup_tbl" id="reserved_tables">
+        		<div>
+        			<br/>
+
+        			Selected Tables are already reserved  for <br/> <label id="tbl_res_no"></label>...!!!
+        			<br/><br/><label>Do you want to continue?</label>
+        		</div>
+        		
+        		<div class="button ok" >
+        		Yes
+        		</div>
+        		<div class="button cancel" >
+        		No
+        		</div>
+        		
+            </div>
+        </div>
+    </t>
+    
+ 	<t t-name="ReservationListPopupWidget">
+    	<div class="modal-dialog">
+        	<div class="popup_res" id="reserved_tables">
+        		<div>
+        			<br/>
+        			<input type="checkbox" id="chk_res" style="width:17px;height:20px;"/><label> Book Table Against Reservation</label> <br/>
+        			<input type="checkbox" id="chk_res_other" style="width:17px;height:20px;"/> <label> For Other Customer</label><br/>
+        	
+        			<div id="res_tbl_del">
+        			<table id="reservation_table" class="oe_list_content" border="1">
+        				<tr>
+        					<th>Reservation Name</th>
+        					<th>Tables</th>
+        					<th>Customer</th>
+        					<th>Time</th>
+        				</tr>
+        			</table>
+        			<br/>
+        			<label id="sel_res_no_lbl">Select Reservation No : </label><select id="sel_res_no"></select>	 
+        		</div>
+        		</div>
+        		<div class="button ok" >
+        		Book Table
+        		</div>
+        		<div class="button cancel" >
+        		Cancel
+        		</div>
+        		
+            </div>
+        </div>
+    </t>
+
+
+
+	<t t-name="TableScreenWidget">
+       <div id="table-screen" class="screen" >
+            <header id="table_header"><h2>Select Table</h2></header>
+            <header id="room_header"><h2>Select Room</h2></header>
+            <div class="pos-step-container">
+                <div class="pos-receipt-container">
+                    <div class="dialog" id="table_div">
+                    	<label for="tables">Choose Table:</label>
+                        <select id="select-table" name="tables"  multiple="1">
+                           
+                        </select>
+                    </div>
+                    
+                     <div class="dialog" id="room_div">
+                    	<label for="rooms">Choose Room:</label>
+                        <select id="select-room" name="rooms" >
+                            
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </t>
+
+    <t t-name="WaiterScreenWidget">
+       <div id="waiter-screen" class="screen" >
+            <header id="waiter_header"><h2>Select Waiter</h2></header>
+            <div class="pos-step-container">
+                <div class="pos-receipt-container">
+                    <div class="dialog" id="waiter_div">
+                    	
+                        <label id="waiter-name"> Waiter Name:</label>
+	   		 			<input placeholder="Select Waiter" id="waiter-search-pos" style="width:280px;height:23px;margin:6px 0px 0px 33px" />
+                          
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </t>
+
+	
+	<!-- <t t-extend="PaymentScreenWidget">
+		<t t-jquery=".screen-content" t-operation="before">
+					
+				
+		</t>
+	</t> -->
+	   
+	 
+	 
+
+
+	<!-- <t t-extend="PosWidget">
+		<t t-jquery="#orders" t-operation="after">
+		<ol id="orders-table"  style="display:none"></ol> 
+		</t>
+		<t t-jquery="#placeholder-OrderWidget" t-operation="before">
+			<div id="placeholder-CustomerWaiterNameWidget"></div>
+		</t>
+	</t> -->
+  
+    
+ 
+
+    
+  
+    <!-- <t t-extend="PosWidget">
+     	<t t-jquery=".point-of-sale .placeholder-UsernameWidget" t-operation="after">
+                        <button id="kot" class="kot-g" style="background:linear-gradient(#B2B3D7, #7F82AC) repeat scroll 0 0 transparent">Generate KOT/BOT</button>    
+        </t>
+	</t> -->
+    
+    
+    
+   </templates>

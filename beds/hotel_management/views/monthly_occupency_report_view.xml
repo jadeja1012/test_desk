@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="monthly_occupency_report_view">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <div class="page">
+                            <h1 style="text-align:center;">Occupancy Report</h1>
+                            <table cellpadding="5" class="table table-bordered table-condensed" width="100%">
+                                <thead>
+                                    <tr style="background-color:#eaeaea;">
+                                        <th style="text-align:left;">Date</th>
+                                        <th style="text-align:center;">Booked Room(s)</th>
+                                        <th style="text-align:center;">Rooms Available</th>
+                                        <th style="text-align:center;">Occupancy(%)</th>
+                                        
+                                      
+<!--                                        <th style="text-align:right;">Total Tax</th>-->
+                                    </tr>
+
+                                </thead>
+                                <tbody width="100%">
+                                    <tr t-foreach="get_monthly_occupancy_information(docs)" t-as="line">
+                                        <td align="left">
+                                            <span t-esc="line.get('date')"  t-options='{"widget": "date", "format": "dd-MM-yyyy"}'/>
+                                        </td>
+                                        <td align="center">
+                                            <span t-esc="'%.2f'% line.get('no_booked_room')"/>
+                                        </td>
+                                        <td align="center">
+                                            <span t-esc="'%.2f'% line.get('total_room_avail')"/>
+                                        </td>
+                                        <td align="center">
+                                            <span t-esc="'%.2f'% line.get('occ_percent')"/>
+                                            %
+                                        </td>
+                                        
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+
+
+
+<template id="monthly_occupency_revenue_report_view">
+    <t t-call="web.html_container">
+        <t t-call="web.internal_layout">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page">
+                    <h1 style="text-align:center;">Revenue Report</h1>
+                    <table cellpadding="5" class="table table-bordered table-condensed" width="100%">
+                        <thead>
+                            <tr style="background-color:#eaeaea;">
+                                <th style="text-align:left;">Date</th>
+                                <th style="text-align:center;">Room</th>
+                                <th style="text-align:center;">Checked-In</th>
+                                <th style="text-align:center;">Checked-Out</th>
+                                <th style="text-align:center;">Room Rent</th>
+                                <th style="text-align:center;">Hotel Service</th>
+                                <th style="text-align:center;">Laundry</th>
+                                <th style="text-align:center;">Restaurant</th>
+                                <th style="text-align:center;">Transportation</th>
+                                <th style="text-align:center;">POS</th>
+                                <th style="text-align:center;">Tax Amount</th>
+                                <th style="text-align:center;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="get_monthly_occupancy_revenue_information(doc)" t-as="line">
+                                <tr>
+                                    <td align="left">
+                                        <span t-esc="line['date']" t-options='{"widget": "date", "format": "dd-MM-yyyy"}'/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="line['room_name']"/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="line['checked_in']"/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="line['checked_out']"/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="line['room_rent']" t-options='{"widget": "float", "precision": 2}' />
+                                    </td>
+                                    <td align="center">
+                                      <span t-esc="'{:,.2f}'.format(float(line['hotel_service']) if line['hotel_service'] else 0.00)"/>
+
+                                    </td>
+                                    <td align="center">
+                                      <span t-esc="'{:,.2f}'.format(float(line['laundry']) if line['laundry'] else 0.00)"/>
+                                    </td>
+                                    <td align="center">
+                                      <span t-esc="'{:,.2f}'.format(float(line['restaurant']) if line['restaurant'] else 0.00)"/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="'{:,.2f}'.format(float(line['transportation']) if line['transportation'] else 0.00)"/>
+                                    </td>
+                                     <td align="center">
+                                        <span t-esc="'{:,.2f}'.format(float(line['pos']) if line['pos'] else 0.00)"/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="'{:,.2f}'.format(float(line['tax']) if line['tax'] else 0.00)"/>
+                                    </td>
+                                    <td align="center">
+                                        <span t-esc="line['total']" t-options='{"widget": "float", "precision": 2}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+    </data>
+</odoo>
+

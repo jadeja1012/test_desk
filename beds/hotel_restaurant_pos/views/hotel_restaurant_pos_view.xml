@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <?xml version="1.0"?> -->
+<odoo>
+	<data>
+		 <record model="ir.ui.view" id="view_hotel_folio_form_inherit_transport_line">
+            <field name="name">hotel.folio.inherit transport</field>
+            <field name="model">hotel.folio</field>
+            <field name="inherit_id" ref="hotel_management.hotel_folio_form_inherit_state"/>
+            <field name="arch" type="xml">
+                <field name="food_lines" position="after">
+                  
+                  
+						<separator string="POS Order Entries" colspan="4" />
+						<field name="pos_order_ids" colspan="4" nolabel="1" >
+							<list>
+								<field name="name"/>
+								<field name="session_id"/>
+								<field name="date_order"/>
+								<field name="pos_reference"/>
+								<field name="payment_ids" widget="many2many_tags"/>
+								<field name="partner_id"/>
+								 <field name="currency_id" invisible="1"/>
+								<field name="user_id"/>
+								<field name="payment_status"/>
+                                <field name="amount_total" sum="Amount total" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}" decoration-bf="1"/>
+							</list>
+						</field>
+					
+                </field>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="view_hotel_form_inherit1">
+			<field name="name">pos.order.inherit1</field>
+			<field name="model">pos.order</field>
+			<field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+			<field name="arch" type="xml">
+					<!--<button name="%(point_of_sale.action_pos_payment)d" class="oe_highlight"
+					type="action" invisible="state != 'draft'"
+					position="replace">
+					<button name="%(point_of_sale.action_pos_payment)d" string="Payment"
+						class="oe_highlight" type="action" invisible="state not in ('draft','credit')"
+						/>
+				</button>
+				
+			
+
+
+			<xpath expr="//button[@name='action_pos_order_invoice']" position="attributes">
+					<attribute name="invisible">1</attribute>
+					
+				</xpath>
+				<xpath expr="//button[@name='refund']" position="after">
+					<button name="create_pos_order_invoice" string="Create Invoice"
+							class="oe_highlight" type="object"
+							state="draft,credit,paid" />
+				  </xpath>-->
+
+				<field name="partner_id" position="after">
+					<field name="folio_line_id"></field>
+					<field name="folio_ids"></field>
+					<field name="payment_status"></field>
+					
+            <!-- Insert the new page after the "Notes" page -->
+
+				</field>
+				 <xpath expr="//page[@name='notes']" position="after">
+            	<separator string=" Room Amenities"/>
+                <page name="table" string="Table">
+                    <field name="table_ids" nolabel="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="state" invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+        </xpath>
+
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="hotel_reservation_order_form_inherited">
+			<field name="name">hotel.reservation.order.form.inherited</field>
+			<field name="model">hotel.reservation.order</field>
+			<field name="inherit_id"
+				ref="hotel_restaurant.view_hotel_reservation_order_form" />
+			<field name="arch" type="xml">
+				<field name="reservation_id" position="after">
+					<field name="pos_ref" readonly="1" />
+				</field>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="view_pos_config_form_inherit">
+			<field name="name">pos.config.form.view.inherit</field>
+			<field name="model">pos.config</field>
+			<field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+			<field name="arch" type="xml">
+<!-- 				<field name="barcode_nomenclature_id" position="after"> -->
+				<field name="name" position="after">
+					<label for="shop_id" string="Hotel Name" class="col-lg-3 o_light_label"/>
+					<field name="shop_id" string="Hotel id" />
+				</field>
+			</field>
+		</record>
+
+
+	</data>
+</odoo>
+	    
+	           

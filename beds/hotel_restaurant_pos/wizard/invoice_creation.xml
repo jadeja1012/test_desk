@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--   pos.details -->
+
+        <record id="view_invoice_creation" model="ir.ui.view">
+            <field name="name">POS Invoice Option</field>
+            <field name="model">hotel.invoice.creation.popup</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Creation" version="7.0">
+                  <group>
+                     <field name="invoice_type"/>
+                    </group>
+                   
+                    <footer>
+                        <button name="create_invoice" type="object" string="Create Invoice" class="oe_highlight"/>
+                        <button special="cancel" data-hotkey="z" string="Cancel" type="object" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_invoice_creation" model="ir.actions.act_window">
+            <field name="name"> Invoice creation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hotel.invoice.creation.popup</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+    </odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="laundry_category_id" model="product.category">
+            <field name="name">Laundry Services</field>
+        </record>
+        
+        <record id="cat3333" model="product.category">
+            <field name="name">Clothes</field>
+        </record>
+        
+     </data>
+</openerp>

@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <record id="send_confirm_mail" model="mail.template">
+            <field name="name">Reservation confirmation Mail</field>
+            <field name="model_id" ref="model_hotel_reservation"/>
+            <field name="email_from">{{ (object.company_id.email_formatted) }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="subject">Booking Confirmation</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Dear <t t-out="object.partner_id.name"/>,
+        <br/><br/>
+        We are delighted to confirm your reservation at <span t-out="object.shop_id.name"></span>. Your stay is scheduled from <span t-out="object.reservation_line[0].checkin" t-options='{"widget": "date"}'></span> to <span t-out="object.reservation_line[0].checkout" t-options='{"widget": "date"}'></span>, and your check-in time will be <span t-field="object.reservation_line[0].checkin" t-options='{"widget": "datetime", "time_only": true}'/>, as per your booking   <span t-out="object.reservation_no"></span>.
+        
+    </p>
+</div>
+            </field>
+            <!-- <field name="report_template_ids" eval="[(4, ref('sale.action_report_saleorder'))]"/> -->
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

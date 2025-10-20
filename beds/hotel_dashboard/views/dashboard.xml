@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="hotel_compare_widget_client_actn" model="ir.actions.client">
+            <field name="name">Dashboard</field>
+            <field name="tag">HotelDashboardView_temp</field>
+        </record>
+
+        <menuitem name="Hotel Dashboard" id="hotel_dashboard.menu_root"/>
+        
+        <menuitem name="Hotel Dashboard"
+                  id="mnu_my_widget_main_hotel"
+                  parent="hotel_dashboard.menu_root"
+                  action="hotel_compare_widget_client_actn"/>
+
+
+       <record id="view_calendar_event_form_new" model="ir.ui.view">
+        <field name="name">view.calendar.event.calendar.inherit.calendar</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='resource_ids']" position="after">
+                <field name="hotel_folio" options="{'no_create': True, 'no_create_edit': True}"/>
+                 <field name="hotel_folio_done"  invisible="1"/>
+            </xpath>
+             <xpath expr="//div[@name='button_box']/button[@name='action_open_calendar_event']" position="after">
+            <button name="book_folio"
+                    type="object"
+                    string="Add To Folio"
+                    icon="fa-magic"
+                    class="btn-primary" />
+        </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_calendar_event_form_quick_create_new" model="ir.ui.view">
+        <field name="name">view.calendar.event.calendar.quick.create.inherit.calendar</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form_quick_create"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='description']" position="after">
+                 <field name="hotel_folio" options="{'no_create': True, 'no_create_edit': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+     <record id="view_calendar_event_calendar_new_kan" model="ir.ui.view">
+        <field name="name">view.calendar.event.calendar.inherit.calendar</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="appointment.calendar_event_view_form_gantt_booking"/>
+        <field name="arch" type="xml">
+            
+       <xpath expr="//field[@name='resource_ids']" position="after">
+            <field name="hotel_folio" options="{'no_create': True, 'no_create_edit': True}"/>
+            <button name="book_folio"
+                    type="object"
+                    string="Add To Folio"
+                    icon="fa-magic"
+                    class="btn-primary" />
+        </xpath>
+
+       
+        </field>
+    </record>
+
+
+     <record id="appointment_type_view_form_inherit_appointment_hr_new" model="ir.ui.view">
+        <field name="name">appointment.type.form.inherit.appointment.hr</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='assign_method']" position="after">
+                <field name="product_id"/>
+            </xpath>
+        </field>
+    </record>
+    
+    
+     <record id="view_beds24_config_form" model="ir.ui.view">
+    <field name="name">beds24.config.form</field>
+    <field name="model">beds24.config</field>
+    <field name="arch" type="xml">
+      <form string="Beds24 Configuration">
+        <sheet>
+          <group>
+          <header> <button name="test_connection"
+                    type="object"
+                    string="Test Connection"
+                    class="btn-primary"/>
+                    <button name="sync_properties_and_rooms"
+        type="object"
+        string="Sync Properties And Rooms"
+        class="btn-secondary"/>
+
+                     </header>
+            <field name="name"/>
+            <field name="api_key"/>
+            <field name="prop_key"/>
+          </group>
+          
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_beds24_config_list" model="ir.ui.view">
+    <field name="name">beds24.config.list</field>
+    <field name="model">beds24.config</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="api_key"/>
+        <field name="prop_key"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="action_beds24_config" model="ir.actions.act_window">
+    <field name="name">Beds24 Configuration</field>
+    <field name="res_model">beds24.config</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <menuitem id="menu_beds24_root" name="Beds24 Integration"/>
+  <menuitem id="menu_beds24_config"
+            name="Beds24 Config"
+            parent="menu_beds24_root"
+            action="action_beds24_config"/>
+
+
+
+                  
+    </data>
+</odoo>

@@ -1,0 +1,549 @@
+/* Custom styles for dashboard boxes */
+.dashboard-box {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  
+  /* Blue box style */
+  .box-blue {
+    border-top: 4px solid #3498db;
+  }
+  
+  /* Orange box style */
+  .box-orange {
+    border-top: 4px solid #e67e22;
+  }
+  
+  /* Green box style */
+  .box-green {
+    border-top: 4px solid #2ecc71;
+  }
+  
+  /* Purple box style */
+  .box-purple {
+    border-top: 4px solid #9b59b6;
+  }
+  
+  /* Custom styles for dashboard badges */
+  .dashboard-badge {
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    padding: 8px 15px;
+    margin-right: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+  }
+  
+  /* Blue badge style */
+  .badge-blue {
+    background-color: #a1cef7;
+  }
+  
+  /* Brown badge style */
+  .badge-brown {
+    background-color: #33acf2;
+  }
+  
+  /* Green badge style */
+  .badge-green {
+    background-color: #3ef78d;
+  }
+  
+  /* Orange badge style */
+  .badge-orange {
+    background-color: #faaf6e;
+  }
+  
+  /* Grey badge style */
+  .badge-grey {
+    background-color: #95a5a6;
+  }
+  
+  /* Purple badge style */
+  .badge-purple {
+    background-color: #b9bdb9;
+
+  }
+
+  .fc-cell-content
+  {
+  background-color: white !important;
+  border:1px solid #ddd;
+  text-align: center;
+  font-weight: 500;
+  flex: 1;
+
+  /* max-width: 40px;
+  min-width: 40px; */
+  }
+  .fc-cell-content1
+  {
+  background-color: white !important;
+  border:1px solid #ddd;
+  text-align: center;
+  font-weight: 500;
+  flex: 1;
+  /* max-width: 40px;
+  min-width: 40px; */
+  }
+
+  .CSSTableGenerator{
+    width:100%
+  }
+  
+  .fc-toolbar.fc-header-toolbar {
+    background-color: #a1cef7;
+    display:none;
+    
+  }
+
+  .fc-left {
+    margin-bottom: -3px;
+    margin-left: 10px;
+  }
+
+  .fc-right {
+    position: sticky;
+    margin-right: -518px;
+    left: 46em;
+    display: inline-block;
+  }
+
+  /* .fc-button {
+    font-size: 18px;
+    margin-top: 10px;
+    font-family: open sans;
+    font-weight: bold;
+  } */
+  .fc-prev-button, .fc-next-button {
+    font-size: x-large !important;
+      /*color: grey !important;*/
+    top:-1px;
+    background-color: transparent;
+    border: 1px solid transparent
+  }
+
+  .fc-button:disabled {
+    opacity: 1;
+  }
+  .fc-button-group{
+    display: inline-block;
+  }
+
+  .fc-month-button {
+    background-color: transparent;
+    border: 1px solid transparent
+  }
+
+  .fc-customWeek-button{
+    background-color: transparent;
+    border: 1px solid transparent
+  }
+
+  .fc-today-button{
+    background-color: transparent;
+    border: 1px solid transparent
+  }
+
+  .fc-cell-rooms{
+    background-color: white !important;
+  border:1px solid #ddd;
+  text-align: center;
+  font-weight: 500;
+  max-width: 100px;
+  min-width: 100px;
+  }
+  .fc-cell-room{
+    background-color: white !important;
+  border:1px solid #ddd;
+  text-align: center;
+  font-weight: 500;
+  max-width: 100px;
+  min-width: 100px;
+  }
+
+  .fc-cell-roomname{
+    background-color: white !important;
+  border:1px solid #ddd;
+  text-align: center;
+  font-weight: 500;
+  flex: 1;
+  max-width: 40px;
+  min-width: 40px;
+  }
+
+  .weekend-day {
+    background-color: #f8fabe; /* Green or any desired color */
+    border:1px solid #ddd;
+    text-align: center;
+    font-weight: 500;
+    /* flex: 1; */
+    /* max-width: 40px;
+    min-width: 40px; */
+    
+}
+
+
+.td-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the content */
+  width: 410%; /* Take up the full width of the cell */
+  text-align: center; /* Center the text horizontally */
+  z-index: 1; /* Ensure the text appears above other elements */
+  color: #000; /* Optional: set text color */
+}
+
+.parent-container {
+    position: relative;
+    width: 100%;      /* Ensure it takes full width */
+    height: 100%;     /* Ensure it takes full height */
+}
+
+.td-center-textv {
+  position: absolute;
+  top: 50%; /* Vertically center the text */
+  left: 50%; /* Horizontally center the text */
+  transform: translate(-50%, -50%); /* Adjust the position to exactly center */
+  width: 100%; /* Ensure the width covers the cell */
+  text-align: center; /* Horizontally center text */
+  z-index: 1; /* Ensure it's above other elements */
+  color: #000; /* You can set text color as needed */
+}
+
+
+/* FOR DRAFT */
+td.half-background-draft {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #a1cef7 50%, #ffffff 50%) !important;
+}
+td.half-right-draft {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to left, #a1cef7 50%, #ffffff 50%) !important;
+}
+td.half-left-draft {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #a1cef7 50%, #ffffff 50%) !important;
+}
+td.half-left-draft.half-right-draft {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #a1cef7 50%, #a1cef7 50%) !important;
+}
+td.half-left-draft.half-right-confirm {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #a1cef7 50%, #33acf2 50%) !important;
+}
+td.half-left-draft.half-right-checkin {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #a1cef7 50%, #3ef78d 50%) !important;
+}
+td.half-left-draft.half-right-checkout {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #a1cef7 50%, #FAAF6E 50%) !important;
+}
+td.half-left-draft.half-right-clean {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #a1cef7 50%, #95a5a6 50%) !important;
+}
+td.half-left-draft.half-right-repair {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #a1cef7 50%, #b9bdb9 50%) !important;
+}
+
+
+/* FOR CONFIRM */
+td.half-background-confirm {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #33acf2 50%, #ffffff 50%) !important;
+}
+td.half-right-confirm {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to left, #33acf2 50%, #ffffff 50%) !important;
+}
+td.half-left-confirm {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #33acf2 50%, #ffffff 50%) !important;
+}
+td.half-left-confirm.half-right-confirm {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #33acf2 50%, #33acf2 50%) !important;
+}
+td.half-left-confirm.half-right-draft {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #33acf2 50%, #a1cef7 50%) !important;
+}
+td.half-left-confirm.half-right-checkin {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #33acf2 50%, #3ef78d 50%) !important;
+}
+td.half-left-confirm.half-right-checkout {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #33acf2 50%, #FAAF6E 50%) !important;
+}
+td.half-left-confirm.half-right-clean {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #33acf2 50%, #95a5a6 50%) !important;
+}
+td.half-left-confirm.half-right-repair {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #33acf2 50%, #b9bdb9 50%) !important;
+}
+
+
+
+/* FOR CHECKIN */
+td.half-background-checkin {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #3ef78d 50%, #ffffff 50%) !important;
+}
+td.half-right-checkin {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to left, #3ef78d 50%, #ffffff 50%) !important;
+}
+td.half-left-checkin {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #3ef78d 50%, #ffffff 50%) !important;
+}
+td.half-left-checkin.half-right-checkin {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #3ef78d 50%, #3ef78d 50%) !important;
+}
+td.half-left-checkin.half-right-draft {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #3ef78d 50%, #a1cef7 50%) !important;
+}
+td.half-left-checkin.half-right-confirm {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #3ef78d 50%, #33acf2 50%) !important;
+}
+td.half-left-checkin.half-right-checkout {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #3ef78d 50%, #FAAF6E 50%) !important;
+}
+td.half-left-checkin.half-right-clean {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #3ef78d 50%, #95a5a6 50%) !important;
+}
+td.half-left-checkin.half-right-repair {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #3ef78d 50%, #b9bdb9 50%) !important;
+}
+
+
+
+
+/* FOR CHECKOUT */
+td.half-background-checkout {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #FAAF6E 50%, #ffffff 50%) !important;
+}
+td.half-right-checkout {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to left, #FAAF6E 50%, #ffffff 50%) !important;
+}
+td.half-left-checkout {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #FAAF6E 50%, #ffffff 50%) !important;
+}
+td.half-left-checkout.half-right-checkout {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #FAAF6E 50%, #FAAF6E 50%) !important;
+}
+td.half-left-checkout.half-right-draft {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #FAAF6E 50%, #a1cef7 50%) !important;
+}
+td.half-left-checkout.half-right-confirm {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #FAAF6E 50%, #33acf2 50%) !important;
+}
+td.half-left-checkout.half-right-checkin {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #FAAF6E 50%, #3ef78d 50%) !important;
+}
+td.half-left-checkout.half-right-clean {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #FAAF6E 50%, #95a5a6 50%) !important;
+}
+td.half-left-checkout.half-right-repair {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #FAAF6E 50%, #b9bdb9 50%) !important;
+}
+
+
+
+/* FOR CLEAN */
+td.half-background-clean {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #95a5a6 50%, #ffffff 50%) !important;
+}
+td.half-right-clean {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to left, #95a5a6 50%, #ffffff 50%) !important;
+}
+td.half-left-clean {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #95a5a6 50%, #ffffff 50%) !important;
+}
+td.half-left-clean.half-right-clean {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #95a5a6 50%, #95a5a6 50%) !important;
+}
+td.half-left-clean.half-right-draft {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #95a5a6 50%, #a1cef7 50%) !important;
+}
+td.half-left-clean.half-right-confirm {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #95a5a6 50%, #33acf2 50%) !important;
+}
+td.half-left-clean.half-right-checkin {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #95a5a6 50%, #3ef78d 50%) !important;
+}
+td.half-left-clean.half-right-checkout {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #95a5a6 50%, #FAAF6E 50%) !important;
+}
+td.half-left-clean.half-right-repair {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #95a5a6 50%, #b9bdb9 50%) !important;
+}
+
+
+/* FOR REPAIR */
+td.half-background-repair {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #b9bdb9 50%, #ffffff 50%) !important;
+}
+td.half-right-repair {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to left, #b9bdb9 50%, #ffffff 50%) !important;
+}
+td.half-left-repair {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #b9bdb9 50%, #ffffff 50%) !important;
+}
+td.half-left-repair.half-right-repair {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #b9bdb9 50%, #b9bdb9 50%) !important;
+}
+td.half-left-repair.half-right-draft {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #b9bdb9 50%, #a1cef7 50%) !important;
+}
+td.half-left-repair.half-right-confirm {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #b9bdb9 50%, #33acf2 50%) !important;
+}
+td.half-left-repair.half-right-checkin {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #b9bdb9 50%, #3ef78d 50%) !important;
+}
+td.half-left-repair.half-right-checkout {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #b9bdb9 50%, #FAAF6E 50%) !important;
+}
+td.half-left-repair.half-right-clean {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(to right, #b9bdb9 50%, #95a5a6 50%) !important;
+}
+
+
+
+
+/* Right 50% background in DRAFT */
+.half_draft_color::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #a1cef7 !important;
+  z-index: -1;
+}
+/* Left 50% background in DRAFT */
+.half_draft_color + td::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #a1cef7 !important;
+  z-index: -1;
+}
+
+
+
+
+
+

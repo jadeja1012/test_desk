@@ -1,0 +1,109 @@
+<template id="hotel_dashboard_template" xml:space="preserve">
+  <t t-name="hotel_dashboard_template">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+
+    <div class="container-fluid background" style="background: linear-gradient(to bottom, #e1f5fe, #e6e6e6); overflow-y: auto; height: -webkit-fill-available; overflow-x: overlay; padding: 15px;">
+
+      <!-- My Company Element -->
+      <div class="col-md-12 hotel mb-3" style="font-weight: bold; display: flex; justify-content: center; align-items: center;">
+        <select class="form-select" id="shops" style="color: #333; font-family: 'Lato', sans-serif; width: 150px; height: 30px;">
+          <option value="1" selected="selected">My Company</option>
+          <!-- <option value="2">Other Company</option> -->
+        </select>
+
+        <button id="dashboard_reload" class="btn btn-primary btn-sm" style="margin-left: 10px;margin-right: 10px; height: 30px; padding: 0 10px;" t-on-click="reload">
+          <span class="fa fa-refresh"></span>
+        </button>
+        <span class="dashboard-badge badge-blue" style="/* margin-right: auto; */">Booking</span>
+        <span class="dashboard-badge badge-brown">Confirmed</span>
+        <span class="dashboard-badge badge-green">Checked-in</span>
+        <span class="dashboard-badge badge-orange">Checkout</span>
+        <span class="dashboard-badge badge-grey">Under Cleaning</span>
+        <span class="dashboard-badge badge-purple">Under Maintenance</span>
+      </div>
+
+      <div class="row">
+        <!-- Side 1: Vertical Booking Information -->
+        <div class="col-md-3 mb-3">
+          <div class="dashboard-box p-3 card-3d-effect box-blue" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <div class="box-icon">
+              <i class="fa fa-sign-in fa-2x" style="color: #007bff;"></i>
+            </div>
+            <div class="box-content">
+              <h3 class="box-title">Total Confirmed Reservation</h3>
+              <div class="box-value" id="check_in">10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <div class="dashboard-box p-3 card-3d-effect box-orange" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <div class="box-icon">
+              <i class="fa fa-sign-out fa-2x" style="color: #ff9f00;"></i>
+            </div>
+            <div class="box-content">
+              <h3 class="box-title">Total Check-Out</h3>
+              <div class="box-value" id="check_out">5</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <div class="dashboard-box p-3 card-3d-effect box-green" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <div class="box-icon">
+              <i class="fa fa-home fa-2x" style="color: #28a745;"></i>
+            </div>
+            <div class="box-content">
+              <h3 class="box-title">Today's Availability</h3>
+              <div class="box-value" id="total">25</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <div class="dashboard-box p-3 card-3d-effect box-purple" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <div class="box-icon">
+              <i class="fa fa-check-circle fa-2x" style="color: #6c757d;"></i>
+            </div>
+            <div class="box-content">
+              <h3 class="box-title">Total Reservations</h3>
+              <div class="box-value" id="booked">15</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side 2: Calendar -->
+      <div class="color_information row" style="margin-top: -63px;">
+
+      </div>
+      <div class="col-xs-12 col-md-12 hover-color">
+        <div id='booking_calendar' style="margin-top: 63px;">
+          <div class="fc-toolbar fc-header-toolbar" id="toolbar_box">
+            <div class="fc-left">
+              <h2 id="date_detail">Date</h2>
+            </div>
+            <div class="fc-left">
+              <button type="button" class="fc-today-button fc-button fc-state-default fc-corner-left fc-corner-right fc-state-disabled" t-on-click="today_function" style="border-radius: 12px; background-color: #0000FF; color: white;">
+  Today
+              </button>
+              <div class="fc-button-group">
+                <button type="button" class="fc-prev-button fc-button fc-state-default fc-corner-left" t-on-click="preview_function">&lt;</button>
+                <button type="button" class="fc-next-button fc-button fc-state-default" t-on-click="next_function">&gt;</button>
+                <button type="button" class="fc-month-button fc-button fc-state-default" t-on-click="month_function" style="border-radius: 12px; background-color: #0000FF; color: white;">
+  Month
+                </button>
+                <button type="button" class="fc-customWeek-button fc-button fc-state-default fc-corner-right fc-state-active" id="week_button" t-on-click="week_function" style="border-radius: 12px; background-color: #0000FF; color: white; margin-left: 4px;">
+  Week
+                </button>
+              </div>
+            </div>
+            <div class="fc-center"></div>
+            <div class="fc-clear"></div>
+          </div>
+          <!-- <table id="tbl_dashboard" class="CSSTableGenerator"></table> -->
+        </div>
+      </div>
+    </div>
+  </t>
+</template>
