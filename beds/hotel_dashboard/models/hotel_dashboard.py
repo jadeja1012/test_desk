@@ -103,10 +103,15 @@ class Hotel_dashboard(models.Model):
     def write(self, vals):
         res = super().write(vals)
         try:
-            for record in self:
-                record._push_reservation_to_bed24(record)
+            # If reservation is being cancelled, send cancellation to Beds24
+            if 'state' in vals and vals['state'] == 'cancel':
+                for record in self:
+                    record._cancel_beds24_booking(record)
+            else:
+                for record in self:
+                    record._push_reservation_to_bed24(record)
         except Exception as e:
-            _logger.error(f"Failed to push reservation to Bed24 on update: {e}")
+            _logger.error(f"Failed to sync reservation to Beds24 on update: {e}")
         return res
 
     '''def _push_reservation_to_bed24(self, reservation):
@@ -198,6 +203,41 @@ class Hotel_dashboard(models.Model):
 
 
 
+
+    def _cancel_beds24_booking(self, reservation):
+        """Send cancellation for the given reservation to Beds24.
+
+        Requires `reservation.beds_ref_id` to be set with Beds24 bookId.
+        """
+        beds24 = self.env['beds24.config'].sudo().search([], limit=1)
+        if not beds24:
+            _logger.warning("No Beds24 configuration found. Skipping Beds24 cancellation.")
+            return
+
+        if not reservation.beds_ref_id:
+            _logger.warning("Reservation %s has no Beds24 reference (beds_ref_id). Skipping Beds24 cancellation.", reservation.id)
+            return
+
+        payload = {
+            "authentication": {
+                "apiKey": beds24.api_key,
+                "propKey": beds24.prop_key,
+            },
+            # Identify the booking to cancel on Beds24
+            "bookId": reservation.beds_ref_id.strip(),
+            # Best-effort cancellation flags according to Beds24 setBooking semantics
+            "status": "cancelled",
+        }
+
+        headers = {"Content-Type": "application/json"}
+        try:
+            response = requests.post("https://api.beds24.com/json/setBooking", json=payload, headers=headers)
+            if response.status_code == 200:
+                _logger.info("Beds24 booking %s cancelled successfully for reservation %s.", reservation.beds_ref_id, reservation.id)
+            else:
+                _logger.error("Beds24 cancellation failed (HTTP %s): %s", response.status_code, response.text)
+        except Exception as e:
+            _logger.error("Error calling Beds24 cancellation for reservation %s: %s", reservation.id, e)
 
     def search_reserve_room(self,room_id,cater_id,shop_id):
         room_id = int(room_id)
