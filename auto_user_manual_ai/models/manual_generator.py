@@ -19,6 +19,35 @@ class ManualGenerator(models.Model):
     manual_file = fields.Binary("Downloadable Manual")
     manual_filename = fields.Char("Filename", default="ai_user_manual.pdf")
 
+    # Allow the user to customize the prompt used per module.
+    # Use {module_name} placeholder to inject the current module's name.
+    prompt_template = fields.Text(
+        string="Prompt Template",
+        default=lambda self: self._default_prompt_template(),
+        help="Customize the AI prompt. Use {module_name} to insert the module name.",
+    )
+
+    @staticmethod
+    def _default_prompt_template():
+        return (
+            "You are an Odoo functional expert.\n\n"
+            "Generate a professional, step-by-step **functional user manual** for the Odoo module: `{module_name}`.\n"
+            "we also want user restriction in this \n"
+            "Include:\n"
+            "- A high-level business flow summary.\n"
+            "- Each step: what users do and why.\n"
+            "- User roles involved.\n"
+            "- user restriction\n"
+            "- Sample actions/screens if needed (avoid deep technical terms).\n"
+            "- Recommendations or tips for using the module.\n\n"
+            "Avoid listing technical models like `account.account`. Focus on how real users use this module in the business flow.\n"
+        )
+
+    class _TemplateVars(dict):
+        def __missing__(self, key):
+            # Leave unknown placeholders as-is instead of raising a KeyError
+            return '{' + key + '}'
+
     def call_openrouter(self, prompt):
         print("333333333333333333333333333333",prompt)
 
@@ -58,7 +87,7 @@ class ManualGenerator(models.Model):
         text = text.replace("\n", "<br/>")  # Line breaks
         return text
 
-    @api.depends('module_ids')
+    @api.depends('module_ids', 'prompt_template')
     def _generate_manual_ai(self):
         for record in self:
             if not record.module_ids:
@@ -85,22 +114,10 @@ class ManualGenerator(models.Model):
             # Manual for each module
             for module in record.module_ids:
                 module_name = module.name
-                prompt = f"""
-You are an Odoo functional expert.
+                # Build the prompt from the customizable template
+                template = record.prompt_template or self._default_prompt_template()
+                prompt = template.format_map(self._TemplateVars(module_name=module_name))
 
-
-Generate a professional, step-by-step **functional user manual** for the Odoo module: `{module_name}`.
-we also want user restriction in this 
-Include:
-- A high-level business flow summary.
-- Each step: what users do and why.
-- User roles involved.
-- user restriction
-- Sample actions/screens if needed (avoid deep technical terms).
-- Recommendations or tips for using the module.
-
-Avoid listing technical models like `account.account`. Focus on how real users use this module in the business flow.
-"""
                 ai_text = self.call_openrouter(prompt)
                 formatted_ai_text = self.markdown_to_html(ai_text)
 
