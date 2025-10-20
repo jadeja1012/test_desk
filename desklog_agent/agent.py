@@ -4,6 +4,7 @@ import sys
 import time
 import json
 import platform
+import subprocess
 import threading
 from datetime import datetime
 
@@ -11,11 +12,6 @@ import requests
 import psutil
 from mss import mss
 from PIL import Image
-
-try:
-    import win32gui  # type: ignore
-except Exception:  # noqa: S110
-    win32gui = None
 
 try:
     import pyautogui  # type: ignore
@@ -32,7 +28,8 @@ class DesklogClient:
         self.verify_ssl = verify_ssl
         self.session = requests.Session()
         self.token = None
-        self.system = 'windows' if platform.system().lower().startswith('win') else 'linux'
+        # Ubuntu-only support
+        self.system = 'linux'
         self.hostname = platform.node()
 
     def _json_rpc(self, path, params):
@@ -103,11 +100,7 @@ class DesklogClient:
 
 def get_active_window_title():
     try:
-        if win32gui:
-            hwnd = win32gui.GetForegroundWindow()
-            return win32gui.GetWindowText(hwnd)
         if pyautogui:
-            # On Linux, PyAutoGUI can get active window title via getActiveWindow
             win = pyautogui.getActiveWindow()
             return win.title if win else ''
     except Exception:
@@ -115,13 +108,47 @@ def get_active_window_title():
     return ''
 
 
+def _is_wayland() -> bool:
+    return bool(os.environ.get('WAYLAND_DISPLAY') or os.environ.get('XDG_SESSION_TYPE', '').lower() == 'wayland')
+
+
+def _has_command(cmd: str) -> bool:
+    try:
+        subprocess.run(['which', cmd], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return True
+    except Exception:
+        return False
+
+
 def capture_screenshot(quality=80, fmt='JPEG'):
+    """Capture a screenshot on Ubuntu.
+
+    Wayland: prefer grim if available. X11: use mss.
+    """
+    from io import BytesIO
+
+    if _is_wayland() and _has_command('grim'):
+        # grim outputs PNG to stdout
+        try:
+            proc = subprocess.run(['grim', '-'], check=True, stdout=subprocess.PIPE)
+            png_bytes = proc.stdout
+            img_pil = Image.open(BytesIO(png_bytes))
+            width, height = img_pil.size
+            if fmt.upper() == 'PNG':
+                return png_bytes, 'image/png', width, height
+            # convert to JPEG
+            out = BytesIO()
+            img_pil = img_pil.convert('RGB')
+            img_pil.save(out, format='JPEG', quality=quality, optimize=True)
+            return out.getvalue(), 'image/jpeg', width, height
+        except Exception:
+            # fall back to mss below
+            pass
+
     with mss() as sct:
         img = sct.grab(sct.monitors[0])
         img_pil = Image.frombytes('RGB', img.size, img.rgb)
         width, height = img_pil.size
-        buf = None
-        from io import BytesIO
         bio = BytesIO()
         if fmt.upper() == 'PNG':
             img_pil.save(bio, format='PNG')

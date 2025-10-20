@@ -11,7 +11,8 @@ class DesklogAgent(models.Model):
     name = fields.Char(required=True)
     user_id = fields.Many2one('res.users', required=True, ondelete='cascade', string='User')
     employee_id = fields.Many2one('hr.employee', string='Employee')
-    system = fields.Selection([('linux', 'Linux'), ('windows', 'Windows')], required=True)
+    # Ubuntu-only support; keep value as 'linux' for compatibility
+    system = fields.Selection([('linux', 'Linux')], required=True, default='linux')
     hostname = fields.Char()
     last_seen = fields.Datetime(readonly=True)
     is_active = fields.Boolean(default=True)
@@ -25,7 +26,16 @@ class DesklogAgent(models.Model):
     def create(self, vals):
         if not vals.get('secret_token'):
             vals['secret_token'] = tools.generate_random_password(length=40)
+        # enforce linux only
+        if vals.get('system') and vals['system'] != 'linux':
+            raise ValidationError('Only Linux/Ubuntu agents are supported in this deployment.')
+        vals.setdefault('system', 'linux')
         return super().create(vals)
+
+    def write(self, vals):
+        if 'system' in vals and vals['system'] != 'linux':
+            raise ValidationError('Only Linux/Ubuntu agents are supported in this deployment.')
+        return super().write(vals)
 
 
 class DesklogActivity(models.Model):
