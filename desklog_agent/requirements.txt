@@ -2,5 +2,4 @@ requests>=2.31.0
 mss>=9.0.1
 pillow>=10.0.0
 psutil>=5.9.0
-pywin32; platform_system == "Windows"
-pyautogui>=0.9.54; platform_system != "Windows"  # for active window title (linux)
+pyautogui>=0.9.54  # for active window title (linux)

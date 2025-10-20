@@ -20,7 +20,8 @@ class DesklogController(http.Controller):
         vals = {
             'name': f"{user.name} - {hostname}",
             'user_id': user.id,
-            'system': system,
+            # Ubuntu-only: force linux regardless of client-provided value
+            'system': 'linux',
             'hostname': hostname,
             'last_seen': fields.Datetime.now(),
             'is_active': True,
