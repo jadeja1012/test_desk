@@ -698,24 +698,51 @@ class Beds24Config(models.Model):
         for prop in properties:
             print("PROPERTY >>>>", prop)
             prop_rec = self.env['sale.shop'].sudo().search([('beds_24_prop_id', '=', str(prop.get('propId')))])
+            # Determine target pricelist from Beds24 currency, if any
+            currency_code = prop.get('currency') or prop.get('currencyCode')
+            pricelist_for_currency = False
+            if currency_code:
+                currency = self.env['res.currency'].sudo().search([('name', '=', currency_code)], limit=1)
+                if currency:
+                    # Prefer a pricelist with same currency and same company; otherwise any
+                    company = self.env.company
+                    pricelist_for_currency = self.env['product.pricelist'].sudo().search([
+                        ('currency_id', '=', currency.id),
+                        '|', ('company_id', '=', False), ('company_id', '=', company.id)
+                    ], limit=1)
+                    if not pricelist_for_currency:
+                        # Create a lightweight pricelist for this currency
+                        pricelist_for_currency = self.env['product.pricelist'].sudo().create({
+                            'name': f"Beds24 {currency.name} Pricelist",
+                            'currency_id': currency.id,
+                            'company_id': company.id,
+                        })
             if not prop_rec:
-                prop_rec = self.env['sale.shop'].sudo().create({
+                vals_create = {
                     'name': prop.get('name') or prop.get('propertyName', 'Unnamed'),
                     'payment_default_id': 1,
-                    'pricelist_id': 1,
-                    'pricelist_id': 1,
-                    'picking_type_id':2,
                     'beds_24_prop_id':prop.get('propId'),
-                    #'prop_id': str(prop.get('propId')),
-                    #'prop_key': prop.get('propKey', ''),
-                    #'currency': prop.get('currency')
-                })
+                }
+                if pricelist_for_currency:
+                    vals_create['pricelist_id'] = pricelist_for_currency.id
+                else:
+                    # Fallback to any available pricelist (company preferred) to avoid empty pricelist
+                    fallback_pricelist = self.env['product.pricelist'].sudo().search([
+                        '|', ('company_id', '=', False), ('company_id', '=', self.env.company.id)
+                    ], limit=1)
+                    if fallback_pricelist:
+                        vals_create['pricelist_id'] = fallback_pricelist.id
+                # Optional: set picking_type_id if your environment requires it
+                # vals_create['picking_type_id'] = 2
+                prop_rec = self.env['sale.shop'].sudo().create(vals_create)
             else:
-                prop_rec.write({
+                vals_update = {
                     'name': prop.get('name') or prop.get('propertyName', 'Unnamed'),
                     'beds_24_prop_id':prop.get('propId'),
-                    #'currency': prop.get('currency')
-                })
+                }
+                if pricelist_for_currency:
+                    vals_update['pricelist_id'] = pricelist_for_currency.id
+                prop_rec.write(vals_update)
 
             # Process rooms from roomTypes
             for room in prop.get('roomTypes', []):
