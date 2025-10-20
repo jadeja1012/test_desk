@@ -85,7 +85,6 @@ class DesklogScreenshot(models.Model):
 
 
 class DesklogSettings(models.TransientModel):
-    _name = 'desklog.settings'
     _inherit = 'res.config.settings'
 
     screenshot_interval = fields.Integer(default=300, string='Screenshot Interval (sec)')
