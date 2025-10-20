@@ -1,0 +1,125 @@
+<odoo>
+  <record id="view_desklog_agent_tree" model="ir.ui.view">
+    <field name="name">desklog.agent.tree</field>
+    <field name="model">desklog.agent</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="user_id"/>
+        <field name="employee_id"/>
+        <field name="system"/>
+        <field name="hostname"/>
+        <field name="last_seen"/>
+        <field name="is_active"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_desklog_agent_form" model="ir.ui.view">
+    <field name="name">desklog.agent.form</field>
+    <field name="model">desklog.agent</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="user_id"/>
+            <field name="employee_id"/>
+            <field name="system"/>
+            <field name="hostname"/>
+            <field name="secret_token" readonly="1"/>
+            <field name="last_seen" readonly="1"/>
+            <field name="is_active"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_desklog_agents" model="ir.actions.act_window">
+    <field name="name">Agents</field>
+    <field name="res_model">desklog.agent</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <record id="view_desklog_activity_tree" model="ir.ui.view">
+    <field name="name">desklog.activity.tree</field>
+    <field name="model">desklog.activity</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="timestamp"/>
+        <field name="user_id"/>
+        <field name="employee_id"/>
+        <field name="agent_id"/>
+        <field name="app_name"/>
+        <field name="window_title"/>
+        <field name="idle_seconds"/>
+        <field name="activity_type"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_desklog_activities" model="ir.actions.act_window">
+    <field name="name">Activities</field>
+    <field name="res_model">desklog.activity</field>
+    <field name="view_mode">tree,pivot,graph</field>
+  </record>
+
+  <record id="view_desklog_screenshot_tree" model="ir.ui.view">
+    <field name="name">desklog.screenshot.tree</field>
+    <field name="model">desklog.screenshot</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="captured_at"/>
+        <field name="agent_id"/>
+        <field name="width"/>
+        <field name="height"/>
+        <field name="image_mime"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_desklog_screenshot_form" model="ir.ui.view">
+    <field name="name">desklog.screenshot.form</field>
+    <field name="model">desklog.screenshot</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="captured_at"/>
+            <field name="agent_id"/>
+            <field name="width"/>
+            <field name="height"/>
+            <field name="image_mime"/>
+            <field name="image" widget="image" class="oe_avatar"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_desklog_screenshots" model="ir.actions.act_window">
+    <field name="name">Screenshots</field>
+    <field name="res_model">desklog.screenshot</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <record id="view_desklog_settings" model="ir.ui.view">
+    <field name="name">desklog.settings.view</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="base.view_general_configuration"/>
+    <field name="arch" type="xml">
+      <xpath expr="//div[hasclass('settings')]/div" position="inside">
+        <div class="app_settings_block" string="Desklog">
+          <h2>Desklog</h2>
+          <group>
+            <field name="screenshot_interval"/>
+            <field name="screenshot_quality"/>
+            <field name="retain_days"/>
+            <field name="idle_threshold"/>
+          </group>
+        </div>
+      </xpath>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+  <menuitem id="menu_desklog_root" name="Desklog" sequence="10" groups="desklog_tracking.group_desklog_user,desklog_tracking.group_desklog_manager"/>
+
+  <menuitem id="menu_desklog_monitoring" name="Monitoring" parent="menu_desklog_root" sequence="20"/>
+  <menuitem id="menu_desklog_config" name="Configuration" parent="menu_desklog_root" sequence="90" groups="desklog_tracking.group_desklog_manager"/>
+
+  <menuitem id="menu_desklog_agents" name="Agents" parent="menu_desklog_config" action="action_desklog_agents"/>
+  <menuitem id="menu_desklog_settings" name="Settings" parent="menu_desklog_config" action="res_config_settings_action"/>
+
+  <menuitem id="menu_desklog_activities" name="Activities" parent="menu_desklog_monitoring" action="action_desklog_activities"/>
+  <menuitem id="menu_desklog_screenshots" name="Screenshots" parent="menu_desklog_monitoring" action="action_desklog_screenshots"/>
+</odoo>

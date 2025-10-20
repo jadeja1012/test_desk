@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_desklog_agent_manager,access.desklog.agent.manager,model_desklog_agent,desklog_tracking.group_desklog_manager,1,1,1,1
+access_desklog_agent_user,access.desklog.agent.user,model_desklog_agent,desklog_tracking.group_desklog_user,1,0,0,0
+access_desklog_activity_manager,access.desklog.activity.manager,model_desklog_activity,desklog_tracking.group_desklog_manager,1,1,1,1
+access_desklog_activity_user,access.desklog.activity.user,model_desklog_activity,desklog_tracking.group_desklog_user,1,0,0,0
+access_desklog_screenshot_manager,access.desklog.screenshot.manager,model_desklog_screenshot,desklog_tracking.group_desklog_manager,1,1,1,1
+access_desklog_screenshot_user,access.desklog.screenshot.user,model_desklog_screenshot,desklog_tracking.group_desklog_user,1,0,0,0
